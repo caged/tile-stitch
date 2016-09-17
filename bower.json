@@ -1,0 +1,7 @@
+{
+  "name": "satellite",
+  "dependencies":{
+    "leaflet-graticule": "https://raw.githubusercontent.com/turban/Leaflet.Graticule/master/L.Graticule.js",
+    "leaflet-grid": "https://raw.githubusercontent.com/jieter/Leaflet.Grid/master/L.Grid.js"
+  }
+}

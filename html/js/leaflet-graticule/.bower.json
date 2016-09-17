@@ -1,0 +1,13 @@
+{
+  "name": "leaflet-graticule",
+  "_cacheHeaders": {
+    "ETag": "\"0e761339d5f75a5df3f190251e3e55e02abd0694\"",
+    "Content-Length": "809",
+    "Content-Type": "text/plain; charset=utf-8"
+  },
+  "_release": "e-tag:0e761339d",
+  "main": "index.js",
+  "_source": "https://raw.githubusercontent.com/turban/Leaflet.Graticule/master/L.Graticule.js",
+  "_target": "*",
+  "_originalSource": "https://raw.githubusercontent.com/turban/Leaflet.Graticule/master/L.Graticule.js"
+}

@@ -14,6 +14,9 @@
   <style>
     body { margin:0; padding:0; }
     #map { position: absolute; top:0; bottom:0; right:0; left:0; }
+    img {
+      border: 1px solid red;
+    }
   </style>
 </head>
 <body>
@@ -21,9 +24,26 @@
 <div id="map"></div>
 
 <script>
-  var map = L.map("map").setView([37.75, -122.23], 10);
+  var map = L.map("map")
+    .setView([45.5171981658182, -122.650060727995], 14)
 
-  L.esri.basemapLayer("Topographic").addTo(map);
+ L.esri.tiledMapLayer({
+    url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Aerial_Photos_Summer_2015/MapServer",
+    maxZoom: 19
+  }).addTo(map);
+
+ L.esri.tiledMapLayer({
+    url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Basemap_Color_Labels/MapServer",
+    maxZoom: 19
+  }).addTo(map);
+
+  // var canvasTiles = L.esri.tileLayer.canvas();
+  //
+  // canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+  //     var ctx = canvas.getContext('2d');
+  //     console.log(tilePoint);
+  //     // draw something on the tile canvas
+  // }
 </script>
 
 </body>
