@@ -14,8 +14,14 @@
   <style>
     body { margin:0; padding:0; }
     #map { position: absolute; top:0; bottom:0; right:0; left:0; }
-    img {
-      border: 1px solid red;
+    .debug-tile-info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: "Consolas";
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 1px #222;
     }
   </style>
 </head>
@@ -24,18 +30,46 @@
 <div id="map"></div>
 
 <script>
+  var CanvasLayer = L.GridLayer.extend({
+      createTile: function(point){
+          var tile = L.DomUtil.create('div', 'leaflet-tile'),
+              canvas = L.DomUtil.create('canvas', 'debug-tile');
+
+          tile.appendChild(canvas)
+
+          var size = this.getTileSize();
+          tile.width = canvas.width = size.x;
+          tile.height = canvas.height = size.y;
+
+          var ctx = canvas.getContext('2d');
+          ctx.rect(0, 0, canvas.width, canvas.height)
+          ctx.strokeStyle = 'red'
+          ctx.stroke()
+
+          var span = L.DomUtil.create('span', 'debug-tile-info')
+          span.innerHTML = point.z + "," + point.x + "," + point.y
+          tile.appendChild(span)
+
+          return tile;
+      }
+  });
+
   var map = L.map("map")
     .setView([45.5171981658182, -122.650060727995], 14)
+
 
  L.esri.tiledMapLayer({
     url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Aerial_Photos_Summer_2015/MapServer",
     maxZoom: 19
   }).addTo(map);
 
- L.esri.tiledMapLayer({
-    url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Basemap_Color_Labels/MapServer",
-    maxZoom: 19
-  }).addTo(map);
+  var clayer = new CanvasLayer()
+  map.addLayer(clayer)
+ //
+ // L.esri.tiledMapLayer({
+ //    url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Basemap_Color_Labels/MapServer",
+ //    maxZoom: 19
+ //  }).addTo(map);
 
   // var canvasTiles = L.esri.tileLayer.canvas();
   //
