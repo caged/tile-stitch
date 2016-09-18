@@ -10,7 +10,7 @@ parser.add_argument('-x1', required=True, type=int, help="x tile index to end at
 parser.add_argument('-y0', required=True, type=int, help="y tile index to start at")
 parser.add_argument('-y1', required=True, type=int, help="y tile index to end at")
 parser.add_argument('-z', '--zoom', required=True, help="zoom level to fetch")
-parser.add_argument('-r', '--route', default='Aerial_Photos_Summer_2015', help="route path on file system")
+parser.add_argument('-d', '--directory', default='tiles/Aerial_Photos_Summer_2015', nargs='+', help="directory where tiles are stored in z/x/y.jpg format")
 parser.add_argument('-s', '--tilesize', default=256, type=int, help="size in pixels of image tile")
 parser.add_argument('-o', '--outfile', required=True, help="name of merged file to write")
 args = parser.parse_args()
@@ -21,14 +21,18 @@ xgrid  = (args.x1 + 1 - args.x0)
 width = xgrid * args.tilesize
 height  = ygrid * args.tilesize
 
-outfile = Image.new('RGB', (width, height))
 
-for x in range(args.x0, args.x1 + 1):
-    for y in range(args.y0, args.y1 + 1):
-        tile_file = "tiles/%s/%s/%s/%s.jpg" % (args.route, args.zoom, x, y)
-        row_offset = (y - args.y0) % ygrid
-        col_offset = (x - args.x0) % xgrid
-        img = Image.open(tile_file)
-        outfile.paste(im=img, box=(col_offset * args.tilesize, row_offset * args.tilesize))
+for directory in args.directory:
+    outfile = Image.new('RGB', (width, height))
 
-outfile.save(args.outfile)
+    for x in range(args.x0, args.x1 + 1):
+        for y in range(args.y0, args.y1 + 1):
+            tile_file = os.path.join(directory, args.zoom, str(x), str(y) + ".jpg")
+            row_offset = (y - args.y0) % ygrid
+            col_offset = (x - args.x0) % xgrid
+            img = Image.open(tile_file)
+            outfile.paste(im=img, box=(col_offset * args.tilesize, row_offset * args.tilesize))
+
+    filename = os.path.join(os.path.abspath(args.outfile), os.path.basename(directory) + ".jpg")
+    print(filename)
+    outfile.save(filename)
