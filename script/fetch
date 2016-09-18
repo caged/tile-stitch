@@ -20,7 +20,7 @@ args = parser.parse_args()
 
 url = "https://www.portlandmaps.com/arcgis/rest/services/Public/%s/MapServer/WMTS/1.0.0/WMTSCapabilities.xml" % args.route
 
-print("Fetching %s tiles from %s" % ((args.x1 - args.x0) * (args.y1 + 1 - args.y0), url))
+print("Fetching %s tiles from %s\n" % ((args.x1 - args.x0) * (args.y1 + 1 - args.y0), url))
 
 wmts = WebMapTileService(url)
 
@@ -31,6 +31,7 @@ for x in range(args.x0, args.x1 + 1):
         if os.path.isfile(tile_file) and not args.force:
             continue
 
+        print("Fetching %s..." % tile_file, end="\r")
         tile = wmts.gettile(
             layer=args.layer,
             tilematrixset=args.tilematrixset,
