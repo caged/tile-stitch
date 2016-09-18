@@ -23,11 +23,40 @@
       color: #fff;
       text-shadow: 0 0 1px #222;
     }
+
+  #basemaps-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 400;
+    background: white;
+    padding: 10px;
+  }
   </style>
 </head>
 <body>
 
 <div id="map"></div>
+<div id="basemaps-wrapper" class="leaflet-bar">
+  <select name="basemaps" id="basemaps" class="js-basemap-selector">
+    <option value="Public/Aerial_Photos_Summer_1998">Aerial_Photos_Summer_1998</option>
+    <option value="Public/Aerial_Photos_Summer_2000">Aerial_Photos_Summer_2000</option>
+    <option value="Public/Aerial_Photos_Summer_2003">Aerial_Photos_Summer_2003</option>
+    <option value="Public/Aerial_Photos_Summer_2005">Aerial_Photos_Summer_2005</option>
+    <option value="Public/Aerial_Photos_Summer_2006">Aerial_Photos_Summer_2006</option>
+    <option value="Public/Aerial_Photos_Summer_2007">Aerial_Photos_Summer_2007</option>
+    <option value="Public/Aerial_Photos_Summer_2008">Aerial_Photos_Summer_2008</option>
+    <option value="Public/Aerial_Photos_Summer_2009">Aerial_Photos_Summer_2009</option>
+    <option value="Public/Aerial_Photos_Summer_2010">Aerial_Photos_Summer_2010</option>
+    <option value="Public/Aerial_Photos_Summer_2011">Aerial_Photos_Summer_2011</option>
+    <option value="Public/Aerial_Photos_Summer_2012">Aerial_Photos_Summer_2012</option>
+    <option value="Public/Aerial_Photos_Summer_2013">Aerial_Photos_Summer_2013</option>
+    <option value="Public/Aerial_Photos_Summer_2014">Aerial_Photos_Summer_2014</option>
+    <option selected value="Public/Aerial_Photos_Summer_2015">Aerial_Photos_Summer_2015</option>
+    <option value="Public/Aerial_Photos_Winter_2005">Aerial_Photos_Winter_2005</option>
+    <option value="Public/Aerial_Photos_Winter_2012">Aerial_Photos_Winter_2012</option>
+  </select>
+</div>
 
 <script>
   var CanvasLayer = L.GridLayer.extend({
@@ -55,16 +84,39 @@
   });
 
   var map = L.map("map")
-    .setView([45.5171981658182, -122.650060727995], 14)
+    .setView([45.5171981658182, -122.650060727995], 14),
+    activeLayer = null,
+    debugLayer = null
+
+  function activateLayer(name) {
+    if(activeLayer) map.removeLayer(activeLayer)
+    if(debugLayer) map.removeLayer(debugLayer)
+
+    activeLayer = L.esri.tiledMapLayer({
+      url: "https://www.portlandmaps.com/arcgis/rest/services/" + name + "/MapServer",
+      maxZoom: 19
+    }).addTo(map);
 
 
- L.esri.tiledMapLayer({
-    url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Aerial_Photos_Summer_2015/MapServer",
-    maxZoom: 19
-  }).addTo(map);
+    debugLayer = new CanvasLayer()
+    map.addLayer(debugLayer)
+  }
 
-  var clayer = new CanvasLayer()
-  map.addLayer(clayer)
+
+  activateLayer('Public/Aerial_Photos_Summer_2015')
+  document.querySelector('.js-basemap-selector').addEventListener('change', function() {
+    var layer = this.value
+    activateLayer(layer)
+  })
+ // L.esri.tiledMapLayer({
+ //    url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Aerial_Photos_Summer_2015/MapServer",
+ //    maxZoom: 19
+ //  }).addTo(map);
+ //
+ //  var clayer = new CanvasLayer()
+ //  map.addLayer(clayer)
+
+
  //
  // L.esri.tiledMapLayer({
  //    url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Basemap_Color_Labels/MapServer",
