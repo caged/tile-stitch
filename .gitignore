@@ -1,3 +1,4 @@
 tiles
 *.png
 *.jpg
+node_modules

@@ -1,0 +1,165 @@
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Portland Satellite History</title>
+  <link rel="stylesheet" href="../node_modules/bulma/css/bulma.css" media="screen"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet-src.js"></script>
+  <script src="../node_modules/leaflet.sync/L.Map.Sync.js"></script>
+
+
+  <!-- Load Esri Leaflet from CDN -->
+  <script src="https://unpkg.com/esri-leaflet@2.0.3"></script>
+
+  <style>
+    body { margin:0; padding:0; }
+    .debug-tile-info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: "Consolas";
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 1px #222;
+    }
+
+    .label {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      font-size: 16px;
+      z-index: 9999;
+      font-family: "Helvetica Neue";
+      color: #fff;
+      text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+    }
+
+    .map {
+      height: 50vh;
+      box-sizing: border-box;
+      border: 1px solid #fff;
+    }
+  </style>
+</head>
+<body>
+
+<div class="columns">
+  <div id="map" class="map column is-half"></div>
+  <div id="map1" class="map column is-half"></div>
+</div>
+<div class="columns">
+  <div id="map2" class="map column is-half"></div>
+  <div id="map3" class="map column is-half"></div>
+</div>
+
+<script>
+  var basemaps = [
+    'Public/Aerial_Photos_Summer_2010',
+    'Public/Aerial_Photos_Summer_2005',
+    'Public/Aerial_Photos_Summer_2000'
+  ]
+
+  var CanvasLayer = L.GridLayer.extend({
+      createTile: function(point){
+          var tile = L.DomUtil.create('div', 'leaflet-tile'),
+              canvas = L.DomUtil.create('canvas', 'debug-tile');
+
+          tile.appendChild(canvas)
+
+          var size = this.getTileSize();
+          tile.width = canvas.width = size.x;
+          tile.height = canvas.height = size.y;
+
+          var ctx = canvas.getContext('2d');
+          ctx.rect(0, 0, canvas.width, canvas.height)
+          ctx.strokeStyle = 'red'
+          ctx.stroke()
+
+          var span = L.DomUtil.create('span', 'debug-tile-info')
+          span.innerHTML = point.z + "," + point.x + "," + point.y
+          tile.appendChild(span)
+
+          return tile;
+      }
+  });
+
+
+
+  function initMap(name, targetId) {
+    var map = L.map(targetId, {
+      attributionControl: false
+    }).setView([45.5171981658182, -122.650060727995], 14)
+
+    L.esri.tiledMapLayer({
+      url: "https://www.portlandmaps.com/arcgis/rest/services/" + name + "/MapServer",
+      maxZoom: 19
+    }).addTo(map)
+
+    L.esri.tiledMapLayer({
+      url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Basemap_Color_Labels/MapServer",
+      maxZoom: 19
+    }).addTo(map)
+
+    var target = document.getElementById(targetId),
+        label = L.DomUtil.create('h2', 'label', target)
+
+    label.innerHTML = name.match(/[0-9]+$/)
+
+    return map
+  }
+
+  function addMap(name, target) {
+    debugLayer = new CanvasLayer()
+    map.addLayer(debugLayer)
+  }
+
+
+  var coordinator = initMap('Public/Aerial_Photos_Summer_2015', 'map'),
+      maps = [coordinator]
+
+  basemaps.forEach(function(basemap, idx) {
+    maps.push(initMap(basemap, 'map' + (idx + 1)))
+  })
+
+  maps.forEach(function(m) {
+    maps.forEach(function(m2) {
+      m.sync(m2)
+      m2.sync(m)
+    })
+  })
+
+  // coordinator.sync(map)
+  // maps.forEach(function(m) { return map.sync(m) })
+
+
+
+  // document.querySelector('.js-basemap-selector').addEventListener('change', function() {
+  //   var layer = this.value
+  //   activateLayer(layer)
+  // })
+ // L.esri.tiledMapLayer({
+ //    url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Aerial_Photos_Summer_2015/MapServer",
+ //    maxZoom: 19
+ //  }).addTo(map);
+ //
+ //  var clayer = new CanvasLayer()
+ //  map.addLayer(clayer)
+
+
+ //
+ // L.esri.tiledMapLayer({
+ //    url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Basemap_Color_Labels/MapServer",
+ //    maxZoom: 19
+ //  }).addTo(map);
+
+  // var canvasTiles = L.esri.tileLayer.canvas();
+  //
+  // canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+  //     var ctx = canvas.getContext('2d');
+  //     console.log(tilePoint);
+  //     // draw something on the tile canvas
+  // }
+</script>
+
+</body>
+</html>

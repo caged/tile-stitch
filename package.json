@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "bulma": "*",
+    "leaflet.sync": "0.0.5"
+  }
+}
