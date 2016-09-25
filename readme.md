@@ -5,7 +5,7 @@ This project was born out of a desire to print large areas of satellite photos o
 Tested on OSX 10.11.6 with Python 3.5.2. First install the requirements.
 
 ```
-pip install -r requirements.txt
+script/bootstrap
 ```
 
 Open up the server to pull up a debug grid view.  Each grid contains its signature as z,x,y.  
