@@ -32,8 +32,8 @@ Now download tiles at zoom level 19 starting at the grid point `[83513, 187554]`
 
 Now we can merge the set of tiles we just downloaded into one large image.  You can find more info by running `script/merge --help`, but quickly:
 
-`-o` - The directory to store the output images.
-`-d` - One or more input directories to read from.  Sometimes it's useful to merge a bunch of layers in one go.
+* `-o` - The directory to store the output images.
+* `-d` - One or more input directories to read from.  Sometimes it's useful to merge a bunch of layers in one go.
 
 ```
 ./script/merge -o ./out \
