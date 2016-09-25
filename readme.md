@@ -1,3 +1,5 @@
+![](/preview.jpg)
+
 Fetch and merge tiles from [Portland's ArcGIS server](https://www.portlandmaps.com/arcgis/rest/services/Public).
 
 Tested on OSX 10.11.6 with Python 3.5.2. First install the requirements.
