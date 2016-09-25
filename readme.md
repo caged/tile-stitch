@@ -8,7 +8,7 @@ Tested on OSX 10.11.6 with Python 3.5.2. First install the requirements.
 script/bootstrap
 ```
 
-Open up the server to pull up a debug grid view.  Each grid contains its signature as z,x,y.  
+Open up the server to pull up a debug grid view.  Each grid contains a tile signature as z,x,y.  
 
 ```
 script/server
