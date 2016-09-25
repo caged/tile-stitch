@@ -1,6 +1,6 @@
 ![](/preview.jpg)
 
-Fetch and merge tiles from [Portland's ArcGIS server](https://www.portlandmaps.com/arcgis/rest/services/Public).
+This project was born out of a desire to print large areas of satellite photos that are only available via smaller 256x256px tiles.  It allows you to fetch and merge tiles from [Portland's ArcGIS server](https://www.portlandmaps.com/arcgis/rest/services/Public).
 
 Tested on OSX 10.11.6 with Python 3.5.2. First install the requirements.
 
