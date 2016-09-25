@@ -1,4 +1,4 @@
 tiles
 *.png
-*.jpg
 node_modules
+out
