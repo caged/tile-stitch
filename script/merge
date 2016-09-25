@@ -34,5 +34,5 @@ for directory in args.directory:
             outfile.paste(im=img, box=(col_offset * args.tilesize, row_offset * args.tilesize))
 
     filename = os.path.join(os.path.abspath(args.outfile), os.path.basename(directory) + ".jpg")
-    print(filename)
+    os.makedirs(os.path.dirname(filename), exist_ok=True)
     outfile.save(filename)
