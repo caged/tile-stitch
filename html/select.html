@@ -1,0 +1,72 @@
+<html>
+<head>
+  <meta charset=utf-8 />
+  <title>Portland Satellite History</title>
+  <link rel="stylesheet" href="../node_modules/bulma/css/bulma.css" media="screen"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet-src.js"></script>
+  <script src="../node_modules/leaflet.sync/L.Map.Sync.js"></script>
+  <script src="./debug.js"></script>  
+
+
+  <!-- Load Esri Leaflet from CDN -->
+  <script src="https://unpkg.com/esri-leaflet@2.0.3"></script>
+
+  <style>
+    body { margin:0; padding:0; }
+    .debug-tile-info {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: "Consolas";
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 1px #222;
+    }
+
+    .map {
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+<div class="columns">
+  <div id="map" class="map column"></div>
+</div>
+
+<script>
+  function initMap(name, targetId) {
+    var map = L.map(targetId, {
+      attributionControl: false
+    }).setView([45.5171981658182, -122.650060727995], 14)
+
+    L.esri.tiledMapLayer({
+      url: "https://www.portlandmaps.com/arcgis/rest/services/" + name + "/MapServer",
+      maxZoom: 19
+    }).addTo(map)
+
+    L.esri.tiledMapLayer({
+      url: "https://www.portlandmaps.com/arcgis/rest/services/Public/Basemap_Color_Labels/MapServer",
+      maxZoom: 19
+    }).addTo(map)
+
+    var clayer = new CanvasLayer()
+    map.addLayer(clayer)
+
+    return map
+  }
+
+  function addMap(name, target) {
+    debugLayer = new CanvasLayer()
+    map.addLayer(debugLayer)
+  }
+
+
+  var coordinator = initMap('Public/Aerial_Photos_Summer_2015', 'map')
+
+</script>
+
+</body>
+</html>
