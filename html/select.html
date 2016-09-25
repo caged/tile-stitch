@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet-src.js"></script>
   <script src="../node_modules/leaflet.sync/L.Map.Sync.js"></script>
-  <script src="./debug.js"></script>  
+  <script src="./debug.js"></script>
 
 
   <!-- Load Esri Leaflet from CDN -->
@@ -28,19 +28,52 @@
     .map {
       height: 100vh;
     }
+
+  #basemaps-wrapper {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 400;
+    background: white;
+    padding: 10px;
+  }
   </style>
 </head>
 <body>
 
 <div class="columns">
   <div id="map" class="map column"></div>
+<div id="basemaps-wrapper" class="leaflet-bar">
+  <select name="basemaps" id="basemaps" class="js-basemap-selector">
+    <option value="Public/Aerial_Photos_Summer_1998">Aerial_Photos_Summer_1998</option>
+    <option value="Public/Aerial_Photos_Summer_2000">Aerial_Photos_Summer_2000</option>
+    <option value="Public/Aerial_Photos_Summer_2003">Aerial_Photos_Summer_2003</option>
+    <option value="Public/Aerial_Photos_Summer_2005">Aerial_Photos_Summer_2005</option>
+    <option value="Public/Aerial_Photos_Summer_2006">Aerial_Photos_Summer_2006</option>
+    <option value="Public/Aerial_Photos_Summer_2007">Aerial_Photos_Summer_2007</option>
+    <option value="Public/Aerial_Photos_Summer_2008">Aerial_Photos_Summer_2008</option>
+    <option value="Public/Aerial_Photos_Summer_2009">Aerial_Photos_Summer_2009</option>
+    <option value="Public/Aerial_Photos_Summer_2010">Aerial_Photos_Summer_2010</option>
+    <option value="Public/Aerial_Photos_Summer_2011">Aerial_Photos_Summer_2011</option>
+    <option value="Public/Aerial_Photos_Summer_2012">Aerial_Photos_Summer_2012</option>
+    <option value="Public/Aerial_Photos_Summer_2013">Aerial_Photos_Summer_2013</option>
+    <option value="Public/Aerial_Photos_Summer_2014">Aerial_Photos_Summer_2014</option>
+    <option selected value="Public/Aerial_Photos_Summer_2015">Aerial_Photos_Summer_2015</option>
+    <option value="Public/Aerial_Photos_Winter_2005">Aerial_Photos_Winter_2005</option>
+    <option value="Public/Aerial_Photos_Winter_2012">Aerial_Photos_Winter_2012</option>
+  </select>
+</div>
 </div>
 
 <script>
+  var map;
+
   function initMap(name, targetId) {
-    var map = L.map(targetId, {
-      attributionControl: false
-    }).setView([45.5171981658182, -122.650060727995], 14)
+    if(!map) {
+      map = L.map(targetId, {
+        attributionControl: false
+      }).setView([45.5171981658182, -122.650060727995], 14)
+    }
 
     L.esri.tiledMapLayer({
       url: "https://www.portlandmaps.com/arcgis/rest/services/" + name + "/MapServer",
@@ -63,8 +96,27 @@
     map.addLayer(debugLayer)
   }
 
+  function activateLayer(name) {
+    if(activeLayer) map.removeLayer(activeLayer)
+    if(debugLayer) map.removeLayer(debugLayer)
+
+    activeLayer = L.esri.tiledMapLayer({
+      url: "https://www.portlandmaps.com/arcgis/rest/services/" + name + "/MapServer",
+      maxZoom: 19
+    }).addTo(map);
+
+
+    debugLayer = new CanvasLayer()
+    map.addLayer(debugLayer)
+  }
+
 
   var coordinator = initMap('Public/Aerial_Photos_Summer_2015', 'map')
+
+  document.querySelector('.js-basemap-selector').addEventListener('change', function() {
+    var layer = this.value
+    initMap(layer, 'map')
+  })
 
 </script>
 
