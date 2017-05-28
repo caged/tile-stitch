@@ -11,7 +11,7 @@ parser.add_argument('-y0', required=True, type=int, help="y tile index to start 
 parser.add_argument('-y1', type=int, help="y tile index to end at")
 parser.add_argument('-o', '--offset', type=int, help="number of tiles to offset from origin x,y")
 parser.add_argument('-z', '--zoom', required=True, help="zoom level to fetch")
-parser.add_argument('-d', '--directory', default='tiles/Aerial_Photos_Summer_2015', nargs='+',
+parser.add_argument('-d', '--directory', default=['tiles/Aerial_Photos_Summer_2016'], nargs='+',
                     help="directory where tiles are stored in z/x/y.jpg format")
 parser.add_argument('-s', '--tilesize', default=256, type=int, help="size in pixels of image tile")
 parser.add_argument('-f', '--outfile', required=True, help="name of merged file to write")
