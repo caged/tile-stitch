@@ -12,9 +12,12 @@ parser.add_argument('-y0', required=True, type=int, help="y tile index to start 
 parser.add_argument('-y1', required=True, type=int, help="y tile index to end at")
 parser.add_argument('-z', '--zoom', required=True, help="zoom level to fetch")
 parser.add_argument('-l', '--layer', default='Public_Aerial_Photos_Summer_2015')
-parser.add_argument('-r', '--route', default='Aerial_Photos_Summer_2015', help="route path for WMTS service url")
+parser.add_argument('-r', '--route', default='Aerial_Photos_Summer_2015',
+                    help="route path for WMTS service url")
 parser.add_argument('-t', '--tilematrixset', default='GoogleMapsCompatible')
-parser.add_argument('-f', '--force', default=False, help="Force fetching new image regardless if the tile exists on the local file system")
+parser.add_argument('-f', '--force', default=False,
+                    help="Force fetching new image regardless if the tile exists on the local\
+                         file system")
 
 args = parser.parse_args()
 

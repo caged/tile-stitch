@@ -10,16 +10,17 @@ parser.add_argument('-x1', required=True, type=int, help="x tile index to end at
 parser.add_argument('-y0', required=True, type=int, help="y tile index to start at")
 parser.add_argument('-y1', required=True, type=int, help="y tile index to end at")
 parser.add_argument('-z', '--zoom', required=True, help="zoom level to fetch")
-parser.add_argument('-d', '--directory', default='tiles/Aerial_Photos_Summer_2015', nargs='+', help="directory where tiles are stored in z/x/y.jpg format")
+parser.add_argument('-d', '--directory', default='tiles/Aerial_Photos_Summer_2015', nargs='+',
+                    help="directory where tiles are stored in z/x/y.jpg format")
 parser.add_argument('-s', '--tilesize', default=256, type=int, help="size in pixels of image tile")
 parser.add_argument('-o', '--outfile', required=True, help="name of merged file to write")
 args = parser.parse_args()
 
-ygrid  = (args.y1 + 1 - args.y0)
-xgrid  = (args.x1 + 1 - args.x0)
+ygrid = (args.y1 + 1 - args.y0)
+xgrid = (args.x1 + 1 - args.x0)
 
 width = xgrid * args.tilesize
-height  = ygrid * args.tilesize
+height = ygrid * args.tilesize
 
 
 for directory in args.directory:
