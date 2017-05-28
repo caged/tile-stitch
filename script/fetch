@@ -7,12 +7,13 @@ from time import sleep
 
 parser = argparse.ArgumentParser(description='Fetch tiles from Portlands WMTS server')
 parser.add_argument('-x0', required=True, type=int, help="x tile index to start at")
-parser.add_argument('-x1', required=True, type=int, help="x tile index to end at")
+parser.add_argument('-x1', type=int, help="x tile index to end at")
 parser.add_argument('-y0', required=True, type=int, help="y tile index to start at")
-parser.add_argument('-y1', required=True, type=int, help="y tile index to end at")
+parser.add_argument('-y1', type=int, help="y tile index to end at")
+parser.add_argument('-o', '--offset', type=int, help="number of tiles to offset from origin x,y")
 parser.add_argument('-z', '--zoom', required=True, help="zoom level to fetch")
-parser.add_argument('-l', '--layer', default='Public_Aerial_Photos_Summer_2015')
-parser.add_argument('-r', '--route', default='Aerial_Photos_Summer_2015',
+parser.add_argument('-l', '--layer', default='Public_Aerial_Photos_Summer_2016')
+parser.add_argument('-r', '--route', default='Aerial_Photos_Summer_2016',
                     help="route path for WMTS service url")
 parser.add_argument('-t', '--tilematrixset', default='GoogleMapsCompatible')
 parser.add_argument('-f', '--force', default=False,
@@ -20,6 +21,10 @@ parser.add_argument('-f', '--force', default=False,
                          file system")
 
 args = parser.parse_args()
+
+if args.offset:
+    args.x1 = args.x0 + args.offset
+    args.y1 = args.y0 + args.offset
 
 url = "https://www.portlandmaps.com/arcgis/rest/services/Public/%s/MapServer/WMTS/1.0.0/WMTSCapabilities.xml" % args.route
 
