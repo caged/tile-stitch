@@ -51,4 +51,4 @@ for x in range(args.x0, args.x1 + 1):
         os.makedirs(os.path.dirname(tile_file), exist_ok=True)
         with open(tile_file, "wb") as f:
             f.write(tile.read())
-        sleep(0.5)
+        sleep(0.1)
